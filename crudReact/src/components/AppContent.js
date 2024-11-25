@@ -19,17 +19,7 @@ const AppContent = () => {
   };
 
   const handleUpdate = (student) => {
-    const newName = prompt("Enter new name:", student.studentName);
-    const newEmail = prompt("Enter new email:", student.studentEmail);
-
-    if (newName !== null && newEmail !== null) {
-      const updatedStudent = {
-        ...student,
-        studentName: newName,
-        studentEmail: newEmail,
-      };
-      updateMutation.mutate(updatedStudent);
-    }
+    updateMutation.mutate(student);
   };
 
   const handleDelete = (studentId) => {
@@ -37,36 +27,36 @@ const AppContent = () => {
   };
 
   return (
-    <div>
-      {createMutation.error && (
-        <div className="error">{createMutation.error.message}</div>
-      )}
-      {updateMutation.error && (
-        <div className="error">{updateMutation.error.message}</div>
-      )}
-      {deleteMutation.error && (
-        <div className="error">{deleteMutation.error.message}</div>
-      )}
+      <div>
+        {createMutation.error && (
+            <div className="error">{createMutation.error.message}</div>
+        )}
+        {updateMutation.error && (
+            <div className="error">{updateMutation.error.message}</div>
+        )}
+        {deleteMutation.error && (
+            <div className="error">{deleteMutation.error.message}</div>
+        )}
 
-      {isStudentsLoading ? (
-        <div className="loading">Loading students...</div>
-      ) : (
-        <>
-          <StudentForm onCreate={handleCreate} />
-          <StudentList
-            students={students}
-            onUpdate={handleUpdate}
-            onDelete={handleDelete}
-          />
-        </>
-      )}
+        {isStudentsLoading ? (
+            <div className="loading">Loading students...</div>
+        ) : (
+            <>
+              <StudentForm onCreate={handleCreate} />
+              <StudentList
+                  students={students}
+                  onUpdate={handleUpdate} // Pass the updated `handleUpdate` to StudentList
+                  onDelete={handleDelete}
+              />
+            </>
+        )}
 
-      {isQueryError && (
-        <div className="error">
-          Failed to load students: {queryError.message}
-        </div>
-      )}
-    </div>
+        {isQueryError && (
+            <div className="error">
+              Failed to load students: {queryError.message}
+            </div>
+        )}
+      </div>
   );
 };
 
